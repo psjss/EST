@@ -249,13 +249,6 @@ contract ESTTokenSale is Ownable{
     
     return now > phases[noOfPhases-1].endTime;
   }
-  
-    //if crowdsales is over, the money rasied should be transferred to the wallet address
-  function withdrawFunds() public onlyOwner{
-  
-      vault.withdrawToWallet();
-  }
-  
 
   
   /**
@@ -329,7 +322,7 @@ contract ESTTokenSale is Ownable{
         uint8 [4] memory bonusPercentages;
         
         //pre-sales
-        startTimes[0] = 1530403200; //JULY 01, 2018 12:00:00 AM GMT
+        startTimes[0] = 1530614425; //JULY 01, 2018 12:00:00 AM GMT
         endTimes[0] = 1535759999; //AUGUST 31, 2018 11:59:59 PM GMT
         cummulativeHardCaps[0] = 2107040600000000000000 wei;
         bonusPercentages[0] = 67;
@@ -362,6 +355,14 @@ contract ESTTokenSale is Ownable{
    function()public payable{
        buyTokens(msg.sender);
    }
+   
+   function getFundingInfoOfPhase(uint8 phase) public view returns (uint256){
+       
+       PhaseInfo storage currentlyRunningPhase = phases[uint256(phase)];
+       
+       return currentlyRunningPhase.weiRaised;
+       
+   } 
    
    /**
    * @dev Low level token purchase function
@@ -441,13 +442,16 @@ contract ESTTokenSale is Ownable{
     }
 
     // Remove an user from the whitelist
-    function removeUser(address user) public nonZeroAddress(user) onlyOwner {
+    function removeUser(address user) public nonZeroAddress(user) onlyOwner returns(bool){
       
         require(whitelisted[user] = true);
 
         whitelisted[user] = false;
-
+        
         emit LogUserRemoved(user);
+        
+        return true;
+
 
     }
 
@@ -487,6 +491,22 @@ contract ESTTokenSale is Ownable{
       
    }
    
+   //method to check how many tokens are left
+   function tokensLeftForSale() public view returns (uint256){
+       return token.balanceOf(address(this));
+   }
+   
+   //method to check the user balance
+   function checkUserTokenBalance(address _user) public view returns(uint256) {
+       return token.balanceOf(_user);
+   }
+   
+   //method to check how many tokens have been sold out till now out of 450.5 Million
+   function tokensSold() public view returns (uint256) {
+       return tokensAvailableForSale.sub(token.balanceOf(address(this)));
+   }
+   
+   //Allowing owner to transfer the  money rasied to the wallet address
    function withDrawFunds()public onlyOwner _contractUp {
       
        vault.withdrawToWallet();
