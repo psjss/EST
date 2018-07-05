@@ -322,7 +322,7 @@ contract ESTTokenSale is Ownable{
         uint8 [4] memory bonusPercentages;
         
         //pre-sales
-        startTimes[0] = 1530614425; //JULY 01, 2018 12:00:00 AM GMT
+        startTimes[0] = 1532044800; //JULY 20, 2018 12:00:00 AM GMT
         endTimes[0] = 1535759999; //AUGUST 31, 2018 11:59:59 PM GMT
         cummulativeHardCaps[0] = 2107040600000000000000 wei;
         bonusPercentages[0] = 67;
