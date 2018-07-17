@@ -248,7 +248,7 @@ contract MintableToken is StandardToken, Ownable {
   event BeneficiariesAdded();
   
   uint256 public lastMintingTime;
-  uint256 public mintingStartTime = 1529773359;
+  uint256 public mintingStartTime = 1531815638;
   uint256 public mintingThreshold = 31536000;
   uint256 public lastMintedTokens = 91000000000000000;
 
@@ -293,7 +293,7 @@ contract MintableToken is StandardToken, Ownable {
      return true;
   }
   
-  //Return how much tokens will be minted as per algorithm. Each 10% tokens will be reduced
+  //Return how much tokens will be minted as per algorithm. Each year 10% tokens will be reduced
   function tokensToMint()private returns(uint256 _tokensToMint){
       
       uint8 tiersToBeMinted = currentTier() - getTierForLastMiniting();
